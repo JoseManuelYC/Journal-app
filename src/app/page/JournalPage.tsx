@@ -1,7 +1,10 @@
+import { Typography } from "@mui/material";
+import { JournalLayout } from "../layout/JournalLayout";
+
 export const JournalPage = () => {
   return (
-    <div>
-      <h1>JournalPage</h1>
-    </div>
+    <JournalLayout>
+      <Typography variant="h1">JournalPage</Typography>
+    </JournalLayout>
   );
 };
