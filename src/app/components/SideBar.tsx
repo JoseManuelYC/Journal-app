@@ -46,7 +46,7 @@ export const Sidebar = ({ drawerWidth }: SidebarProps) => {
                 </ListItemIcon>
                 <Grid container>
                   <ListItemText primary={text} />
-                  <ListItemText secondary="lorem ipsumdadkhagwdhgawhgdfsahgfdhgwafdhgfsahgdhwa" />
+                  <ListItemText secondary={"lorem ipsumdadkhagwd fsahgdhwa"} />
                 </Grid>
               </ListItemButton>
             </ListItem>

@@ -1,6 +1,5 @@
 import { Box, Toolbar } from "@mui/material";
-import { NavBar } from "../components/NavBar";
-import { Sidebar } from "../components/SideBar";
+import { NavBar, Sidebar } from "../components";
 
 type JournalLayoutProps = {
   children: React.ReactNode;
