@@ -1,11 +1,31 @@
-import { Button, Grid, Link, TextField, Typography } from "@mui/material";
-import { AuthLayout } from "../layout/AuthLayout";
-import { AccountCircleOutlined } from "@mui/icons-material";
+//React Router
 import { Link as LinkRouter } from "react-router-dom";
+//Components MUI
+import { Button, Grid, Link, TextField, Typography } from "@mui/material";
+import { AccountCircleOutlined } from "@mui/icons-material";
+//Components
+import { AuthLayout } from "../layout/AuthLayout";
+//Custom Hook
+import { useForm } from "../../hooks/useForm";
+
+const formData = {
+  displayName: "Jose Yanez",
+  email: "joseyanez@google.com",
+  password: "123456",
+};
+
 export const RegisterPage = () => {
+  const { displayName, email, password, onNewValue, formState } =
+    useForm(formData);
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(formState);
+  };
+
   return (
     <AuthLayout title="Register">
-      <form>
+      <form onSubmit={onSubmit}>
         <Grid container sx={{ mb: "10px" }}>
           <Grid item xs={12}>
             <TextField
@@ -13,6 +33,9 @@ export const RegisterPage = () => {
               type="text"
               placeholder="Your name"
               fullWidth
+              name="displayName"
+              value={displayName}
+              onChange={onNewValue}
             />
           </Grid>
           <Grid item xs={12} mt={2}>
@@ -21,6 +44,9 @@ export const RegisterPage = () => {
               type="email"
               placeholder="tucorreo@google.com"
               fullWidth
+              name="email"
+              value={email}
+              onChange={onNewValue}
             />
           </Grid>
           <Grid item xs={12} mt={2}>
@@ -28,12 +54,15 @@ export const RegisterPage = () => {
               label="Password"
               type="password"
               placeholder="Password"
+              name="password"
+              value={password}
+              onChange={onNewValue}
               fullWidth
             />
           </Grid>
           <Grid container spacing={2} sx={{ mt: "6px" }}>
             <Grid item xs={12}>
-              <Button variant="contained" fullWidth>
+              <Button type="submit" variant="contained" fullWidth>
                 <Typography mr={1}>Create Account</Typography>
                 <AccountCircleOutlined />
               </Button>

@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from "react";
 
 type Data = {
+  displayName: string;
   email: string;
   password: string;
 };

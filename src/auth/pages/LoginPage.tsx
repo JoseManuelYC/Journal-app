@@ -1,18 +1,29 @@
-import { useDispatch } from "react-redux";
+//Hooks
+import { useMemo } from "react";
+//React Redux
+import { useDispatch, useSelector } from "react-redux";
+//React Router
 import { Link as LinkRouter } from "react-router-dom";
+//Components MUI
 import { Google } from "@mui/icons-material";
 import { Button, Grid, Link, TextField, Typography } from "@mui/material";
-import { AuthLayout } from "../layout/AuthLayout";
-import { useForm } from "../../hooks/useForm";
+//Redux Toolkit
 import { checkingAuth, checkingGoogle } from "../../store/auth/thunks";
+import { RootState } from "../../store";
+//Commponents
+import { AuthLayout } from "../layout/AuthLayout";
+//Custom Hooks
+import { useForm } from "../../hooks/useForm";
 
 export const LoginPage = () => {
+  const { status } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const { email, password, onNewValue } = useForm({
     email: "josemanuel@gmail.com",
     password: "123124123123",
   });
 
+  const isAuth = useMemo(() => status === "checking", [status]); //Save the status every time it changes
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -50,12 +61,22 @@ export const LoginPage = () => {
           </Grid>
           <Grid container spacing={2} sx={{ mt: "5px" }}>
             <Grid item xs={12} sm={6}>
-              <Button type="submit" variant="contained" fullWidth>
+              <Button
+                disabled={isAuth}
+                type="submit"
+                variant="contained"
+                fullWidth
+              >
                 Login
               </Button>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Button onClick={onGoogleSignIn} variant="contained" fullWidth>
+              <Button
+                disabled={isAuth}
+                onClick={onGoogleSignIn}
+                variant="contained"
+                fullWidth
+              >
                 <Google />
                 <Typography sx={{ ml: "2px" }}>Google</Typography>
               </Button>
