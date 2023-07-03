@@ -14,10 +14,25 @@ const formData = {
   password: "123456",
 };
 
-export const RegisterPage = () => {
-  const { displayName, email, password, onNewValue, formState } =
-    useForm(formData);
+const formValidations = {
+  email: [(value) => value.includes("@"), "the mail is wrong"],
+  password: [
+    (value) => value.length >= 6,
+    "The password must have more than 6 characters",
+  ],
+  displayName: [(value) => value.length >= 1, "username is required"],
+};
 
+export const RegisterPage = () => {
+  const {
+    displayName,
+    email,
+    password,
+    onNewValue,
+    formState,
+    displayNameValid,
+  } = useForm(formData, formValidations);
+  console.log(displayNameValid);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(formState);
