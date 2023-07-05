@@ -8,7 +8,7 @@ import { Link as LinkRouter } from "react-router-dom";
 import { Google } from "@mui/icons-material";
 import { Button, Grid, Link, TextField, Typography } from "@mui/material";
 //Redux Toolkit
-import { checkingAuth, checkingGoogle } from "../../store/auth/thunks";
+import { /* checkingAuth */ checkingGoogle } from "../../store/auth/thunks";
 import { RootState } from "../../store";
 //Commponents
 import { AuthLayout } from "../layout/AuthLayout";
@@ -26,12 +26,11 @@ export const LoginPage = () => {
   const isAuth = useMemo(() => status === "checking", [status]); //Save the status every time it changes
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    dispatch(checkingAuth(email, password));
+    // dispatch(checkingAuth(email, password));
   };
   const onGoogleSignIn = () => {
     console.log("Google Sign in");
-    dispatch(checkingGoogle());
+    checkingGoogle(dispatch);
   };
   return (
     <AuthLayout title="Login">

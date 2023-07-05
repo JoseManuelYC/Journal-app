@@ -15,12 +15,12 @@ const formData = {
 };
 
 const formValidations = {
-  email: [(value) => value.includes("@"), "the mail is wrong"],
+  email: [(value: string) => value.includes("@"), "the mail is wrong"],
   password: [
-    (value) => value.length >= 6,
+    (value: string) => value.length >= 6,
     "The password must have more than 6 characters",
   ],
-  displayName: [(value) => value.length >= 1, "username is required"],
+  displayName: [(value: string) => value.length >= 1, "username is required"],
 };
 
 export const RegisterPage = () => {
@@ -31,8 +31,10 @@ export const RegisterPage = () => {
     onNewValue,
     formState,
     displayNameValid,
+    emailValid,
+    passwordValid,
   } = useForm(formData, formValidations);
-  console.log(displayNameValid);
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(formState);
@@ -51,6 +53,7 @@ export const RegisterPage = () => {
               name="displayName"
               value={displayName}
               onChange={onNewValue}
+              error={!!displayNameValid}
             />
           </Grid>
           <Grid item xs={12} mt={2}>
@@ -62,6 +65,7 @@ export const RegisterPage = () => {
               name="email"
               value={email}
               onChange={onNewValue}
+              error={!!emailValid}
             />
           </Grid>
           <Grid item xs={12} mt={2}>
@@ -73,6 +77,7 @@ export const RegisterPage = () => {
               value={password}
               onChange={onNewValue}
               fullWidth
+              error={!!passwordValid}
             />
           </Grid>
           <Grid container spacing={2} sx={{ mt: "6px" }}>
