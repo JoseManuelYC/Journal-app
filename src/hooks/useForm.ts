@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 
 type Data = {
   displayName?: string;
@@ -8,9 +8,6 @@ type Data = {
 type FormValidationProps = {
   [key: string]: [(value: string) => boolean, string];
 };
-type CheckValuesProps = {
-  [key: string]: string;
-};
 
 export const useForm = (
   initialValue: Data,
@@ -18,10 +15,16 @@ export const useForm = (
 ) => {
   const [formState, setformState] = useState(initialValue);
   const [formValid, setFormValid] = useState({});
-
   useEffect(() => {
     checkForm();
   }, [formState]);
+
+  const isFormValid = useMemo(() => {
+    for (const formCheck of Object.keys(formValid)) {
+      if (formValid[formCheck] === null) return true;
+    }
+    return false;
+  }, [formValid]);
 
   const onNewValue = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = target;
@@ -36,16 +39,15 @@ export const useForm = (
   };
 
   const checkForm = () => {
-    const formCheckValid = {};
+    const formCheckValues = {};
     for (const formField of Object.keys(formValidations)) {
       const [fn, errorMessage] = formValidations[formField];
-      formCheckValid[`${formField}Valid`] = fn(formState[formField])
+      formCheckValues[`${formField}Valid`] = fn(formState[formField])
         ? null
         : errorMessage;
     }
-    setFormValid(formCheckValid);
+    setFormValid(formCheckValues);
   };
-
   return {
     ...formState,
     formState,
@@ -56,5 +58,6 @@ export const useForm = (
     emailValid: null,
     passwordValid: null,
     ...formValid,
+    isFormValid,
   };
 };

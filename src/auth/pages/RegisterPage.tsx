@@ -7,11 +7,14 @@ import { AccountCircleOutlined } from "@mui/icons-material";
 import { AuthLayout } from "../layout/AuthLayout";
 //Custom Hook
 import { useForm } from "../../hooks/useForm";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { startCredentialsEmailPassword } from "../../store/auth/thunks";
 
 const formData = {
-  displayName: "Jose Yanez",
-  email: "joseyanez@google.com",
-  password: "123456",
+  displayName: "",
+  email: "",
+  password: "",
 };
 
 const formValidations = {
@@ -24,6 +27,8 @@ const formValidations = {
 };
 
 export const RegisterPage = () => {
+  const dispatch = useDispatch();
+  const [formSubmit, setFormSubmit] = useState(false);
   const {
     displayName,
     email,
@@ -33,11 +38,14 @@ export const RegisterPage = () => {
     displayNameValid,
     emailValid,
     passwordValid,
+    isFormValid,
   } = useForm(formData, formValidations);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formState);
+    setFormSubmit(true);
+    if (!isFormValid) return;
+    dispatch(startCredentialsEmailPassword(formState));
   };
 
   return (
@@ -53,7 +61,8 @@ export const RegisterPage = () => {
               name="displayName"
               value={displayName}
               onChange={onNewValue}
-              error={!!displayNameValid}
+              error={!!displayNameValid && formSubmit}
+              helperText={displayNameValid}
             />
           </Grid>
           <Grid item xs={12} mt={2}>
@@ -65,7 +74,8 @@ export const RegisterPage = () => {
               name="email"
               value={email}
               onChange={onNewValue}
-              error={!!emailValid}
+              error={!!emailValid && formSubmit}
+              helperText={emailValid}
             />
           </Grid>
           <Grid item xs={12} mt={2}>
@@ -77,7 +87,8 @@ export const RegisterPage = () => {
               value={password}
               onChange={onNewValue}
               fullWidth
-              error={!!passwordValid}
+              error={!!passwordValid && formSubmit}
+              helperText={passwordValid}
             />
           </Grid>
           <Grid container spacing={2} sx={{ mt: "6px" }}>
