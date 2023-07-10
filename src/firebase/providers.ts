@@ -2,6 +2,7 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   signInWithPopup,
+  updateProfile,
 } from "firebase/auth";
 import { FirebaseAuth } from "./config";
 type Credentials = {
@@ -26,7 +27,7 @@ export const signInWithGoogle = async () => {
       photoURL,
       uid,
     };
-  } catch (error: any) {
+  } catch (error) {
     const errorMessage = error.message;
 
     return {
@@ -47,12 +48,22 @@ export const credentialsWithEmailAndPassword = async ({
       email,
       password
     );
-    const { uid } = resp.user;
+    const { uid, photoURL } = resp.user;
+    await updateProfile(FirebaseAuth.currentUser, { displayName });
+
+    return {
+      ok: true,
+      email,
+      displayName,
+      password,
+      uid,
+      photoURL,
+    };
   } catch (error) {
     console.log(error);
     return {
       ok: false,
-      errorMessage: error.message,
+      errorMessage: (error.message = "This email is already in use"),
     };
   }
 };

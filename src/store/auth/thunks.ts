@@ -29,11 +29,13 @@ export const startCredentialsEmailPassword = ({
 }: Credentials) => {
   return async (dispatch: Props) => {
     dispatch(checkCredentials());
-    const res = await credentialsWithEmailAndPassword({
-      email,
-      password,
-      displayName,
-    });
-    console.log(res);
+    const { ok, uid, errorMessage, photoURL } =
+      await credentialsWithEmailAndPassword({
+        email,
+        password,
+        displayName,
+      });
+    if (!ok) return dispatch(logout({ errorMessage }));
+    dispatch(login({ email, uid, displayName, photoURL }));
   };
 };

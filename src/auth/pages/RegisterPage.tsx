@@ -1,14 +1,21 @@
 //React Router
 import { Link as LinkRouter } from "react-router-dom";
 //Components MUI
-import { Button, Grid, Link, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { AccountCircleOutlined } from "@mui/icons-material";
 //Components
 import { AuthLayout } from "../layout/AuthLayout";
 //Custom Hook
 import { useForm } from "../../hooks/useForm";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { startCredentialsEmailPassword } from "../../store/auth/thunks";
 
 const formData = {
@@ -28,6 +35,9 @@ const formValidations = {
 
 export const RegisterPage = () => {
   const dispatch = useDispatch();
+  const { errorMessage, status } = useSelector(
+    (state: RootState) => state.auth
+  );
   const [formSubmit, setFormSubmit] = useState(false);
   const {
     displayName,
@@ -41,11 +51,15 @@ export const RegisterPage = () => {
     isFormValid,
   } = useForm(formData, formValidations);
 
+  const isAuthenticated = useMemo(() => status === "checking", [status]);
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormSubmit(true);
-    if (!isFormValid) return;
-    dispatch(startCredentialsEmailPassword(formState));
+    if (isAuthenticated === false) {
+      if (!isFormValid) return;
+      dispatch(startCredentialsEmailPassword(formState));
+    }
   };
 
   return (
@@ -92,8 +106,16 @@ export const RegisterPage = () => {
             />
           </Grid>
           <Grid container spacing={2} sx={{ mt: "6px" }}>
+            <Grid display={errorMessage ? " " : "none"} item xs={12}>
+              <Alert severity="error">{errorMessage}</Alert>
+            </Grid>
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" fullWidth>
+              <Button
+                disabled={isAuthenticated}
+                type="submit"
+                variant="contained"
+                fullWidth
+              >
                 <Typography mr={1}>Create Account</Typography>
                 <AccountCircleOutlined />
               </Button>
