@@ -1,5 +1,6 @@
 import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 import {
+  checkWithEmailAndPassword,
   credentialsWithEmailAndPassword,
   signInWithGoogle,
 } from "../../firebase/providers";
@@ -11,6 +12,10 @@ type Credentials = {
   password: string;
   displayName: string;
 };
+interface checkLogInProps {
+  email: string;
+  password: string;
+}
 
 /* export const checkingAuth = (dispatch:Props,{ email, password}) => {
   console.log(email, password);
@@ -37,5 +42,14 @@ export const startCredentialsEmailPassword = ({
       });
     if (!ok) return dispatch(logout({ errorMessage }));
     dispatch(login({ email, uid, displayName, photoURL }));
+  };
+};
+export const checkLogIn = ({ email, password }: checkLogInProps) => {
+  return async (dispath: Props) => {
+    dispath(checkCredentials());
+    const { displayName, ok, errorMessage, uid, photoURL } =
+      await checkWithEmailAndPassword({ email, password });
+    if (!ok) return dispath(logout({ errorMessage }));
+    dispath(login({ email, password, uid, displayName, photoURL }));
   };
 };

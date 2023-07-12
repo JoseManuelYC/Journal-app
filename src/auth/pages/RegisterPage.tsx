@@ -17,6 +17,7 @@ import { useForm } from "../../hooks/useForm";
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { startCredentialsEmailPassword } from "../../store/auth/thunks";
+import { RootState } from "../../store";
 
 const formData = {
   displayName: "",

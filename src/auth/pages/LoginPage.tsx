@@ -6,9 +6,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link as LinkRouter } from "react-router-dom";
 //Components MUI
 import { Google } from "@mui/icons-material";
-import { Button, Grid, Link, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
 //Redux Toolkit
-import { /* checkingAuth */ checkingGoogle } from "../../store/auth/thunks";
+import { checkLogIn, checkingGoogle } from "../../store/auth/thunks";
 import { RootState } from "../../store";
 //Commponents
 import { AuthLayout } from "../layout/AuthLayout";
@@ -16,20 +23,22 @@ import { AuthLayout } from "../layout/AuthLayout";
 import { useForm } from "../../hooks/useForm";
 
 export const LoginPage = () => {
-  const { status } = useSelector((state: RootState) => state.auth);
+  const { status, errorMessage } = useSelector(
+    (state: RootState) => state.auth
+  );
   const dispatch = useDispatch();
   const { email, password, onNewValue } = useForm({
-    email: "josemanuel@gmail.com",
-    password: "123124123123",
+    email: "",
+    password: "",
   });
 
   const isAuth = useMemo(() => status === "checking", [status]); //Save the status every time it changes
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // dispatch(checkingAuth(email, password));
+    dispatch(checkLogIn({ email, password }));
   };
   const onGoogleSignIn = () => {
-    console.log("Google Sign in");
     checkingGoogle(dispatch);
   };
   return (
@@ -57,6 +66,11 @@ export const LoginPage = () => {
               onChange={onNewValue}
               fullWidth
             />
+          </Grid>
+          <Grid container spacing={2} sx={{ mt: "2px" }}>
+            <Grid item xs={12} display={errorMessage ? "" : "none"}>
+              <Alert severity="error">{errorMessage}</Alert>
+            </Grid>
           </Grid>
           <Grid container spacing={2} sx={{ mt: "5px" }}>
             <Grid item xs={12} sm={6}>

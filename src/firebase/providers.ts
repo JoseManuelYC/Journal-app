@@ -1,6 +1,7 @@
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
@@ -9,6 +10,10 @@ type Credentials = {
   email: string;
   password: string;
   displayName: string;
+};
+type checkCredendtialsProps = {
+  email: string;
+  password: string;
 };
 
 const googleProvider = new GoogleAuthProvider();
@@ -64,6 +69,26 @@ export const credentialsWithEmailAndPassword = async ({
     return {
       ok: false,
       errorMessage: (error.message = "This email is already in use"),
+    };
+  }
+};
+export const checkWithEmailAndPassword = async ({
+  email,
+  password,
+}: checkCredendtialsProps) => {
+  try {
+    const res = await signInWithEmailAndPassword(FirebaseAuth, email, password);
+    const { displayName, uid, photoURL } = res.user;
+    return {
+      ok: true,
+      displayName,
+      uid,
+      photoURL,
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      errorMessage: (error.message = "User Not Found"),
     };
   }
 };
