@@ -12,12 +12,15 @@ import {
   Typography,
 } from "@mui/material";
 import { TurnedInNot } from "@mui/icons-material";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 type SidebarProps = {
   drawerWidth: number;
 };
 
 export const Sidebar = ({ drawerWidth }: SidebarProps) => {
+  const { displayName } = useSelector((state: RootState) => state.auth);
   return (
     <Box
       component="nav"
@@ -33,7 +36,7 @@ export const Sidebar = ({ drawerWidth }: SidebarProps) => {
       >
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
-            JoseManuel
+            {displayName}
           </Typography>
         </Toolbar>
         <Divider />
