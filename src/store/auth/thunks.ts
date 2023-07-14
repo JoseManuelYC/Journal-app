@@ -2,6 +2,7 @@ import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 import {
   checkWithEmailAndPassword,
   credentialsWithEmailAndPassword,
+  logoutFirebase,
   signInWithGoogle,
 } from "../../firebase/providers";
 import { checkCredentials, login, logout } from "./authSlice";
@@ -51,5 +52,17 @@ export const checkLogIn = ({ email, password }: checkLogInProps) => {
       await checkWithEmailAndPassword({ email, password });
     if (!ok) return dispath(logout({ errorMessage }));
     dispath(login({ email, password, uid, displayName, photoURL }));
+  };
+};
+export const startLogOut = () => {
+  return async (dispatch: Dispatch) => {
+    try {
+      await logoutFirebase();
+      dispatch(logout(null));
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      }
+    }
   };
 };

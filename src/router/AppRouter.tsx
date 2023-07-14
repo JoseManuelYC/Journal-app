@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthRoutes } from "../auth/routes/AuthRoutes";
 import { JournalRoute } from "../app/routes/JournalRoute";
 import CheckingAuth from "../UI/components/CheckingAuth";
@@ -12,11 +12,12 @@ export const AppRouter = () => {
 
   return (
     <Routes>
-      {status === "autenticated" ? (
-        <Route path="/auth/*" element={<AuthRoutes />} />
-      ) : (
+      {status === "authenticated" ? (
         <Route path="/*" element={<JournalRoute />} />
+      ) : (
+        <Route path="/auth/*" element={<AuthRoutes />} />
       )}
+      <Route path="/*" element={<Navigate to="/auth/login" />} />
     </Routes>
   );
 };
