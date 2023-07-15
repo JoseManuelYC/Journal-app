@@ -32,6 +32,7 @@ export const AuthLayout = ({ children, title }: AuthLayoutProps) => {
           alignItems: "center",
         }}
         xs={3}
+        className="animate__animated animate__fadeIn animate__faster"
       >
         <Typography variant="h5" sx={{ mb: 1 }}>
           {title}
