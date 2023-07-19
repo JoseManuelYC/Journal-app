@@ -1,7 +1,9 @@
 import { collection, doc, setDoc } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
-import { AppDispatch } from "..";
-import { addNewEmptyNote, savingNewNote, setActiveNote } from ".";
+import { AppDispatch, RootState } from "..";
+import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes } from ".";
+import { AnyAction, Dispatch } from "@reduxjs/toolkit";
+import { loadNotes } from "../../helpers";
 
 type Note = {
   id?: string | undefined;
@@ -9,9 +11,11 @@ type Note = {
   body: string;
   date: number;
 };
+type Props = Dispatch<AnyAction>;
 
 export const startNewNote = () => {
-  return async (dispatch: AppDispatch, getState) => {
+  return async (dispatch: AppDispatch, getState: RootState) => {
+    dispatch(savingNewNote()); //disable button
     const { uid } = getState().auth;
     const newNote: Note = {
       title: "",
@@ -23,6 +27,14 @@ export const startNewNote = () => {
     newNote.id = newDoc.id;
     dispatch(addNewEmptyNote(newNote));
     dispatch(setActiveNote(newNote));
-    dispatch(savingNewNote());
+  };
+};
+
+export const startLoadingNotes = () => {
+  return async (dispatch: Props, getState) => {
+    const { uid } = getState().auth;
+    if (!uid) throw new Error("uid does not exist");
+    const { notes } = await loadNotes(uid);
+    dispatch(setNotes(notes));
   };
 };
