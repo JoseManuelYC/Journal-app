@@ -7,18 +7,41 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useMemo } from "react";
+import { useDispatch } from "react-redux";
+import { setActiveNote } from "../../store/journal";
 
 type SidebarProps = {
   title: string;
   body: string;
+  id: string;
+  date: number;
+  imageUrls: [];
 };
 
-const SidebarItem = ({ title, body }: SidebarProps) => {
+const SidebarItem = ({
+  title,
+  body,
+  id,
+  date,
+  imageUrls = [],
+}: SidebarProps) => {
+  const dispatch = useDispatch();
+
   const titleLength = useMemo(() => {
     return title.length > 15 ? title.substring(0, 15) + "..." : title;
   }, [title]);
+  const onNewNote = () => {
+    const activeNote = {
+      title,
+      body,
+      id,
+      date,
+      imageUrls,
+    };
+    dispatch(setActiveNote(activeNote));
+  };
   return (
-    <ListItem disablePadding>
+    <ListItem onClick={onNewNote} disablePadding>
       <ListItemButton>
         <ListItemIcon>
           <TurnedInNot />
