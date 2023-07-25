@@ -11,6 +11,7 @@ type NotesProps = {
   date: number;
   title: string;
   body: string;
+  imageUrls: [];
 };
 export const Sidebar = ({ drawerWidth }: SidebarProps) => {
   const { displayName } = useSelector((state: RootState) => state.auth);

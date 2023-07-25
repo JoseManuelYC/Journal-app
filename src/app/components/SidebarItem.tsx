@@ -31,18 +31,26 @@ const SidebarItem = ({
     return title.length > 15 ? title.substring(0, 15) + "..." : title;
   }, [title]);
   const onNewNote = () => {
-    const activeNote = {
+    /*     const activeNote = {
       title,
       body,
       id,
       date,
       imageUrls,
-    };
-    dispatch(setActiveNote(activeNote));
+    }; */
+    dispatch(
+      setActiveNote({
+        title,
+        body,
+        id,
+        date,
+        imageUrls,
+      })
+    );
   };
   return (
-    <ListItem onClick={onNewNote} disablePadding>
-      <ListItemButton>
+    <ListItem disablePadding>
+      <ListItemButton onClick={onNewNote}>
         <ListItemIcon>
           <TurnedInNot />
         </ListItemIcon>

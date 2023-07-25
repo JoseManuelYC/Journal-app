@@ -22,15 +22,17 @@ import { AuthLayout } from "../layout/AuthLayout";
 //Custom Hooks
 import { useForm } from "../../hooks/useForm";
 
+const loginForm = {
+  email: "",
+  password: "",
+};
+
 export const LoginPage = () => {
   const { status, errorMessage } = useSelector(
     (state: RootState) => state.auth
   );
   const dispatch = useDispatch();
-  const { email, password, onNewValue } = useForm({
-    email: "",
-    password: "",
-  });
+  const { email, password, onNewValue } = useForm(loginForm);
 
   const isAuth = useMemo(() => status === "checking", [status]); //Save the status every time it changes
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
