@@ -6,10 +6,7 @@ export const journalSlice = createSlice({
     isSaving: false,
     messageSaved: "",
     notes: [],
-    active: {
-      title: "",
-      body: "",
-    },
+    active: null,
   },
   reducers: {
     addNewEmptyNote: (state, { payload }) => {
@@ -18,17 +15,34 @@ export const journalSlice = createSlice({
     },
     savingNewNote: (state) => {
       state.isSaving = true;
+      state.messageSaved = "";
     },
     setActiveNote: (state, action) => {
       state.active = action.payload;
+      state.messageSaved = "";
     },
     setNotes: (state, { payload }) => {
       state.isSaving = false;
       state.notes = payload;
     },
+    updateNote: (state, { payload }) => {
+      state.isSaving = false;
+      state.notes = state.notes.map((note) => {
+        if (note.id === payload.id) {
+          return payload;
+        }
+        return note;
+      });
+      state.messageSaved = `${payload.title}, ha sido actualiado`;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addNewEmptyNote, savingNewNote, setActiveNote, setNotes } =
-  journalSlice.actions;
+export const {
+  addNewEmptyNote,
+  savingNewNote,
+  setActiveNote,
+  setNotes,
+  updateNote,
+} = journalSlice.actions;
