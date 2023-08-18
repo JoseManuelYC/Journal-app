@@ -1,12 +1,12 @@
-import { SaveOutlined } from "@mui/icons-material";
-import { Button, Grid, TextField, Typography } from "@mui/material";
-import Swal from "sweetalert2";
-import "sweetalert2/dist/sweetalert2.css";
-import { ImageGallery } from "../components";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { SaveOutlined, UploadFileOutlined } from "@mui/icons-material";
+import { Button, Grid, IconButton, TextField, Typography } from "@mui/material";
+import "sweetalert2/dist/sweetalert2.css";
+import Swal from "sweetalert2";
 import { useForm } from "../../hooks/useForm";
-import { useEffect } from "react";
+import { ImageGallery } from "../components";
 import { startUpdateNote } from "../../store/journal/thunks";
 import { setActiveNote } from "../../store/journal";
 
@@ -29,6 +29,13 @@ export const NoteView = () => {
     }
   }, [messageSaved]);
 
+  const inputRef = useRef();
+  const onFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files;
+    if (file?.length === 0) return;
+    console.log("Subiendo archivos");
+  };
+
   /*     const dateTitle = useMemo(() => {
     const dateString = new Date(date).toUTCString();
     return dateString;
@@ -50,7 +57,23 @@ export const NoteView = () => {
           {date}
         </Typography>
       </Grid>
+
       <Grid item>
+        <input
+          type="file"
+          multiple
+          ref={inputRef}
+          style={{ display: "none" }}
+          onChange={onFileInputChange}
+        />
+        <IconButton
+          color="primary"
+          disabled={isSaving}
+          onClick={() => inputRef.current.click()}
+        >
+          <UploadFileOutlined />
+        </IconButton>
+
         <Button disabled={isSaving} sx={{ padding: 2 }} onClick={onNewNote}>
           <SaveOutlined sx={{ fontSize: 30, mr: 1 }} />
           Guardar
