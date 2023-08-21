@@ -6,10 +6,12 @@ import {
   savingNewNote,
   setActiveNote,
   setNotes,
+  setSaving,
   updateNote,
 } from ".";
 import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 import { loadNotes } from "../../helpers";
+import { UploadImages } from "../../helpers/uploadImages";
 
 type Note = {
   id?: string | undefined;
@@ -56,6 +58,14 @@ export const startUpdateNote = () => {
     const docRef = doc(FirebaseDB, `${uid}/journal/notes/${note.id}`);
     await setDoc(docRef, noteToFirestore, { merge: true });
 
+    console.log(note);
     dispatch(updateNote(note));
+  };
+};
+
+export const startUploadImage = (files) => {
+  return async (dispatch: Props) => {
+    dispatch(setSaving());
+    await UploadImages(files[0]);
   };
 };

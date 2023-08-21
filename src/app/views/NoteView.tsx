@@ -7,9 +7,17 @@ import "sweetalert2/dist/sweetalert2.css";
 import Swal from "sweetalert2";
 import { useForm } from "../../hooks/useForm";
 import { ImageGallery } from "../components";
-import { startUpdateNote } from "../../store/journal/thunks";
+import { startUpdateNote, startUploadImage } from "../../store/journal/thunks";
 import { setActiveNote } from "../../store/journal";
 
+/* type Note = {
+  body?: string;
+  date?: number;
+  id?: string;
+  imageUrls?: null | [];
+  title?: string;
+};
+ */
 export const NoteView = () => {
   const dispatch = useDispatch();
   const {
@@ -19,6 +27,8 @@ export const NoteView = () => {
   } = useSelector((state: RootState) => state.journal);
 
   const { title, body, date, onNewValue, formState } = useForm(note);
+  const inputRef = useRef();
+
   useEffect(() => {
     dispatch(setActiveNote(formState));
   }, [formState]);
@@ -29,11 +39,11 @@ export const NoteView = () => {
     }
   }, [messageSaved]);
 
-  const inputRef = useRef();
   const onFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files;
     if (file?.length === 0) return;
     console.log("Subiendo archivos");
+    dispatch(startUploadImage(file));
   };
 
   /*     const dateTitle = useMemo(() => {

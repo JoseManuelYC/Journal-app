@@ -35,6 +35,9 @@ export const journalSlice = createSlice({
       });
       state.messageSaved = `${payload.title}, ha sido actualiado`;
     },
+    setSaving: (state) => {
+      state.isSaving = true;
+    },
   },
 });
 
@@ -45,4 +48,5 @@ export const {
   setActiveNote,
   setNotes,
   updateNote,
+  setSaving,
 } = journalSlice.actions;

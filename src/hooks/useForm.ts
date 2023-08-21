@@ -8,12 +8,20 @@ type Data = {
   body?: string;
   date?: number;
 };
+
+type Note = {
+  body?: string;
+  date?: number;
+  id?: string;
+  imageUrls?: null | [];
+  title?: string;
+};
 type FormValidationProps = {
   [key: string]: [(value: string) => boolean, string];
 };
 
 export const useForm = (
-  initialValue: Data,
+  initialValue: Data | Note,
   formValidations: FormValidationProps = {}
 ) => {
   const [formState, setformState] = useState(initialValue);
