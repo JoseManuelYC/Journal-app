@@ -12,7 +12,6 @@ export const loadNotes = async (uid: string) => {
   if (!uid) throw new Error("uid does not exist");
   const collectionRef = collection(FirebaseDB, `${uid}/journal/notes`);
   const doc = await getDocs(collectionRef);
-  console.log(doc);
   const notes: Note[] = [];
   doc.forEach((data) => {
     notes.push({ id: data.id, ...data.data() });
