@@ -6,6 +6,7 @@ import {
   signInWithGoogle,
 } from "../../firebase/providers";
 import { checkCredentials, login, logout } from "./authSlice";
+import { clearNotesLogout } from "../journal";
 
 type Props = Dispatch<AnyAction>;
 type Credentials = {
@@ -64,5 +65,6 @@ export const startLogOut = () => {
         console.log(error.message);
       }
     }
+    dispatch(clearNotesLogout());
   };
 };

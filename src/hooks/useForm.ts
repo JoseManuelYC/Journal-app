@@ -73,5 +73,8 @@ export const useForm = (
     passwordValid: null,
     ...formValid,
     isFormValid,
+    displayName: undefined,
+    email: undefined,
+    password: undefined,
   };
 };

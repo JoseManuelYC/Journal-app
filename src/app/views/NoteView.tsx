@@ -1,13 +1,21 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { SaveOutlined, UploadFileOutlined } from "@mui/icons-material";
+import {
+  DeleteOutline,
+  SaveOutlined,
+  UploadFileOutlined,
+} from "@mui/icons-material";
 import { Button, Grid, IconButton, TextField, Typography } from "@mui/material";
 import "sweetalert2/dist/sweetalert2.css";
 import Swal from "sweetalert2";
 import { useForm } from "../../hooks/useForm";
 import { ImageGallery } from "../components";
-import { startUpdateNote, startUploadImage } from "../../store/journal/thunks";
+import {
+  startDeleteNote,
+  startUpdateNote,
+  startUploadImage,
+} from "../../store/journal/thunks";
 import { setActiveNote } from "../../store/journal";
 
 /* type Note = {
@@ -46,6 +54,10 @@ export const NoteView = () => {
     dispatch(startUploadImage(file));
   };
 
+  const onDelete = () => {
+    dispatch(startDeleteNote());
+  };
+
   /*     const dateTitle = useMemo(() => {
     const dateString = new Date(date).toUTCString();
     return dateString;
@@ -76,19 +88,26 @@ export const NoteView = () => {
           style={{ display: "none" }}
           onChange={onFileInputChange}
         />
-        <IconButton
+        <Button
           color="primary"
           disabled={isSaving}
           onClick={() => inputRef.current.click()}
+          sx={{ padding: 1, mr: 2 }}
         >
-          <UploadFileOutlined />
-        </IconButton>
+          <UploadFileOutlined sx={{ fontSize: 25, mr: 1 }} />
+          Adjuntar
+        </Button>
 
-        <Button disabled={isSaving} sx={{ padding: 2 }} onClick={onNewNote}>
-          <SaveOutlined sx={{ fontSize: 30, mr: 1 }} />
+        <Button disabled={isSaving} sx={{ padding: 1 }} onClick={onNewNote}>
+          <SaveOutlined sx={{ fontSize: 25, mr: 1 }} />
           Guardar
         </Button>
+        <Button onClick={onDelete} sx={{ padding: 1 }}>
+          <DeleteOutline sx={{ fontSize: 25, mr: 1 }} />
+          Eliminar
+        </Button>
       </Grid>
+
       <Grid container sx={{ mt: 1 }}>
         <TextField
           type="text"
@@ -113,7 +132,7 @@ export const NoteView = () => {
           onChange={onNewValue}
         />
       </Grid>
-      <ImageGallery images={note.imageUrls} />
+      <ImageGallery images={note?.imageUrls} />
     </Grid>
   );
 };
