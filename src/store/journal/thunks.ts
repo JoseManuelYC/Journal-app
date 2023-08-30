@@ -43,7 +43,7 @@ export const startNewNote = () => {
 };
 
 export const startLoadingNotes = () => {
-  return async (dispatch: Props, getState) => {
+  return async (dispatch: Props, getState: RootState) => {
     const { uid } = getState().auth;
     if (!uid) throw new Error("uid does not exist");
     const { notes } = await loadNotes(uid);
@@ -51,12 +51,12 @@ export const startLoadingNotes = () => {
   };
 };
 export const startUpdateNote = () => {
-  return async (dispatch: Props, getState) => {
+  return async (dispatch: Props, getState: RootState) => {
     dispatch(savingNewNote());
     const { uid } = getState().auth;
     const { active: note } = getState().journal;
 
-    const noteToFirestore = { ...note };
+    const noteToFirestore = { ...(note ?? {}) };
     delete noteToFirestore.id;
 
     const docRef = doc(FirebaseDB, `${uid}/journal/notes/${note.id}`);
@@ -78,7 +78,7 @@ export const startUploadImage = (files = []) => {
   };
 };
 export const startDeleteNote = () => {
-  return async (dispatch: Dispatch, getState) => {
+  return async (dispatch: Dispatch, getState: RootState) => {
     const { uid } = getState().auth;
     const { active: note } = getState().journal;
 

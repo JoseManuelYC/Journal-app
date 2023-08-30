@@ -78,6 +78,7 @@ export const checkWithEmailAndPassword = async ({
 }: checkCredendtialsProps) => {
   try {
     const res = await signInWithEmailAndPassword(FirebaseAuth, email, password);
+    console.log(res);
     const { displayName, uid, photoURL } = res.user;
     return {
       ok: true,

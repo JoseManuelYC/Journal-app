@@ -74,7 +74,5 @@ export const useForm = (
     ...formValid,
     isFormValid,
     displayName: undefined,
-    email: undefined,
-    password: undefined,
   };
 };
